@@ -40,8 +40,9 @@ The following should be set and confirmed:
 These steps are based on instructions in SDK documentation - [TI SDK RTOS: 3.1.3.6. Creating Board Library with Custom Name](http://software-dl.ti.com/processor-sdk-rtos/esd/docs/latest/rtos/index_board.html#creating-board-library-with-custom-name) 
 
 However, instructions are based on AM572x platform so they are modified for AM65xx SoC. 
-<br/>
+
 #### 1. Creating new directories for custom board library ####
+
 There are two directories in `<PDK_INSTALL_PATH>\packages\ti\board\src` that are associated with am65xx IDK board. They are `am65xx_idk` and `evmKeystone3`. Directory `evmKeystone3` contains common configuration for am65xx IDK and am65xx EVM boards like DDR settings, board ID, MMR etc. As we will probably change these settings on our board, files in `evmKeystone3` would also be modified. Thus the following must be performed:
 * Copy `am65xx_idk` to `am65xx_mls` (or different suitable name)
 * Copy `evmKeystone3` to `mlsKeystone3` (or different suitable name)
@@ -62,8 +63,9 @@ In directory `am65xx_mls` check include directives and macros and change `idk` t
 
 Also, to support NOR flash chips modify `<PDK_INSTALL_PATH>\packages\ti\board\src\flash\src_files_flash.mk` 
 * Add `am65xx_mls` beside `am65xx_idk` 
-<br/> 
-#### 3. Adding MACRO based inclusion of updated board_cfg.h corresponding to custom Board ####  
+
+#### 3. Adding MACRO based inclusion of updated board_cfg.h corresponding to custom Board ####
+
 In `<PDK_INSTALL_PATH>\packages\ti\board\board_cfg.h` , add the lines pointing to board_cfg.h file in your customBoard package. Thus, updated peripheral instances and board specific defines can be picked up.
 
 - Add the following lines in `board_cfg.h`: 
@@ -72,7 +74,9 @@ In `<PDK_INSTALL_PATH>\packages\ti\board\board_cfg.h` , add the lines pointing t
 #include <ti\board\src\am65xx_mls\include\board_cfg.h>
 ```
 <br/>
-#### 4. Update top level board package makefile to include build for customBoard Library ####  
+
+#### 4. Update top level board package makefile to include build for customBoard Library ####
+
  The makefile is used to include all relevant make files for including Low level driver(LLD), source files relevant to board and the common board.c file. 
 In `<PDK_INSTALL_PATH>\packages\ti\board\build\makefile.mk`, add board.c to the customBoard build:
 
@@ -94,7 +98,9 @@ include $(PDK_BOARD_COMP_PATH)/src/src_files_lld.mk
 endif
 ```
 <br/>
-#### 5. Update Global makerules ####  
+
+#### 5. Update Global makerules ####
+
 File `build_config.mk` defines the global CFLAGS used to compile different PDK components. The SOC_AM65xx macro ensures that the CSL applicable to this SOC will be included in the build. Use the SoC name that corresponds to the platform of your custom board.  
 In `<PDK_INSTALL_PATH>\packages\ti\build\makerules\build_config.mk` add line
 
@@ -106,13 +112,15 @@ In `<PDK_INSTALL_PATH>\packages\ti\build\makerules\platform.mk`
 
 * Add `am65xx_mls` beside `am65xx_idk`
 <br/>
-#### 6. Update Build makerules ####  
+
+#### 6. Update Build makerules ####
 
 In `<PDK_INSTALL_PATH>\packages\ti\build\Rules.make` 
 
 * Add `am65xx_mls` beside `am65xx_idk`
 <br/>
-#### 7. Update source files corresponding to drivers used in board library ####  
+
+#### 7. Update source files corresponding to drivers used in board library ####
 
 **This step is not needed for AM65xx but is left as a reference** File src_files_lld.mk adds source files corresponding to LLD drivers used in the board library. Usually most boards utilitize control driver like I2C (for programming the PMIC or reading EEPROM), UART drivers (for IO) and boot media drivers like (SPI/QSPI, MMC or NAND). In the example below, we assume that the custom Board library has dependency on I2C, SPI and UART LLD drivers. Since the LLD drivers will be linked to the application along with board library, board library only needs <driver>_soc.c corresponding to SOC used on the custom Board.
 
@@ -136,7 +144,9 @@ SRCS_COMMON += I2C_soc.c UART_soc.c SPI_soc.c
 endif
 ```
 <br/>
+
 #### 8. Add custom Board to BOARDLIST and update CORELIST ####
+
 In `<PDK_INSTALL_PATH>\packages\ti\board\board_component.mk`, modify the build to add your custom board and specify the cores for which you want to build the board library. Example to build board library for only A15 and C66x cores, limit the build by specify only a15_0 and C66x in the CORELIST
 
 - Add am65xx_mls in the line
@@ -145,7 +155,9 @@ board_lib_BOARDLIST       = evmAM335x icev2AM335x iceAMIC110 skAM335x bbbAM335x 
                             evmC6678 evmC6657 tda2xx-evm evmDRA75x tda2ex-evm evmDRA72x tda3xx-evm evmDRA78x evmOMAPL137 lcdkOMAPL138 idkAM574x am65xx_evm am65xx_idk am65xx_mls simJ7
 ```
 <br/>
+
 #### 9. Update .bld files for XDCTOOL based build steps ####
+
 Make corresponding changes in `<PDK_INSTALL_PATH>\packages\ti\board\config.bld`, by adding the following lines:
 ```
 var am65xx_mls = {
@@ -163,8 +175,10 @@ Also, in `<PDK_INSTALL_PATH>\packages\ti\board\package.bld`, add the following l
 ```
 Pkg.otherFiles[Pkg.otherFiles.length++] = "src/mlsKeystone/src_files_mlsKeystone.mk";
 ```
-<br/>   
+<br/>
+
 #### 10. Setup Top level PDK build files to add the Custom board to setup environment ####
+
 Modify  `<PDK_INSTALL_PATH>\packages\Rules.make` by adding 
 ```
 export LIMIT_SOCS ?= am65xx
