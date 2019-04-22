@@ -45,7 +45,6 @@ However, instructions are based on AM572x platform so they are modified for AM65
 There are two directories in `<PDK_INSTALL_PATH>\packages\ti\board\src` that are associated with am65xx IDK board. They are `am65xx_idk` and `evmKeystone3`. Directory `evmKeystone3` contains common configuration for am65xx IDK and am65xx EVM boards like DDR settings, board ID, MMR etc. As we will probably change these settings on our board, files in `evmKeystone3` would also be modified. Thus the following must be performed:
 * Copy `am65xx_idk` to `am65xx_mls` (or different suitable name)
 * Copy `evmKeystone3` to `mlsKeystone3` (or different suitable name)
-<br/>
 
 #### 2. Updating names and makefile inside the customBoard package ####
 
