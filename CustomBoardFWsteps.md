@@ -46,7 +46,7 @@ There are two directories in `<PDK_INSTALL_PATH>\packages\ti\board\src` that are
 * Copy `am65xx_idk` to `am65xx_mls` (or different suitable name)
 * Copy `evmKeystone3` to `mlsKeystone3` (or different suitable name)
 <br/>
-#### 2. Updating names and makefile inside the customBoard package ####
+#### 2. Updating names and makefile inside the customBoard package ####\
 
 In `<PDK_INSTALL_PATH>\packages\ti\board\src\`, Rename files  and makefiles in copied directories to reflect new board name. Mekefile will need a bit of work depending on what elements of board you need for your platform.
 In our case do the following:
